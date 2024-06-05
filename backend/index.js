@@ -2,13 +2,14 @@ const cors = require('cors')
 const express = require('express');
 const connectDB = require('./src/db');
 const bodyParser = require('body-parser')
-const routes = require('./src/routes')
-
+const routesUser = require('./src/routes/routesUser')
+const routesMedicine = require('./src/routes/routesMedicine')
 
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
-app.use('/api/users', routes)
+app.use('/api/users', routesUser)
+app.use('/api/medicine', routesMedicine)
 app.use(express.json());
 
 const port = 3000;
