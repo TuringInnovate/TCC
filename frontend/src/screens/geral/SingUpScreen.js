@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
-import InputField from '../components/Input'
-import styles from '../constants/styles/stylesLogin'
-import axios from 'axios';
+import InputField from '../../components/Input'
+import styles from '../../constants/styles/stylesLogin'
+import axios from 'axios'
 
 export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState('');
@@ -16,7 +16,7 @@ export default function SignUpScreen({ navigation }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/create', {
+      const response = await fetch('http://192.168.0.67:3000/users/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,10 +27,11 @@ export default function SignUpScreen({ navigation }) {
       const result = await response.json();
       if (response.ok) {
         Alert.alert('Usuário registrado com sucesso')
-        navigation.navigate('LoginScreen') // Navegue para a tela de login ou outra tela conforme necessário
+        navigation.navigate('Login') // Navegue para a tela de login ou outra tela conforme necessário
       }
       else {
         Alert.alert(result.msg || 'Erro ao registrar usuário')
+        console.log('Erro ao registrar usuário: ', result.msg)
       }
     }
     catch(error){
@@ -69,10 +70,7 @@ export default function SignUpScreen({ navigation }) {
           onChangeText={(text) => setPassword(text)}
         />
           
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleRegister}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
 
@@ -84,7 +82,7 @@ export default function SignUpScreen({ navigation }) {
         </TouchableOpacity>
 
         <View style={styles.imageContainer}>
-          <Image source={require('../assests/logo.png')} style={styles.image} />
+          <Image source={require('../../assests/logo.png')} style={styles.image} />
         </View>
 
       </View>

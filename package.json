@@ -1,7 +1,7 @@
 {
   "name": "apiusuarios",
   "version": "1.0.0",
-  "description": "",
+  "description": "Frontend e Backend do TCC",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {

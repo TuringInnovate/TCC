@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import GeralScreen from '../components/GeralScreen'
+import GeralScreen from '../../components/GeralScreen'
 
 export default DynamicScreenCategory = ({ route }) => {
   // Obtém o ID do item selecionado da navegação

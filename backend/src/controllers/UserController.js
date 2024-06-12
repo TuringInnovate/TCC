@@ -30,15 +30,15 @@ exports.listUser = async (req, res) => {
   try {
     // Procura todos os usuários
     const users = await User.find()
-    res.status(200).send(users);
+    res.status(200).send(users)
   }
   // Caso não consiga procurar
   catch (error) {
     res.status(500).send({
       error: 'Erro ao procurar usuários: ' + error.message
-    });
+    })
   }
-};
+}
 
 // LISTAR USUÁRIO POR ID
 exports.getUser = async (req, res) => {
@@ -122,16 +122,41 @@ exports.deleteUser = async (req, res) => {
 
 // FAZER LOGIN DO USUÁRIO
 exports.loginUser = async (req,res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const { email, password } = req.body
+  const user = await User.findOne({ email, password })
 
   // Caso algum campos esteja errado
   if (!user) {
     return res.status(400).json({
-      message: 'Email ou senha incorretos' });
+      message: 'Email ou senha incorretos' })
   }
 
   res.json({
     message: 'Login realizado com sucesso'
-  });
+  })
+}
+
+// PROCURAR USUÁRIO POR NOME
+exports.searchUser = async (req,res) => {
+  const { name } = req.body
+
+  if(!name) {
+    return res.status(400).send({
+      message: "Nome é obrigatório para pesquisa"
+    })
+  }
+
+  try{
+    const user = await User.find({
+      name: {
+      $regex: name,
+      $options: 'i'
+      }
+    })
+  }
+  catch(error){
+    res.status(500).send({
+      error: "Erro ao buscar o usuário: " + error.message
+    })
+  }
 }

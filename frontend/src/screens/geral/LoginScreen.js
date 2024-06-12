@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
-import InputField from '../components/Input';
-import styles from '../constants/styles/stylesLogin';
+import InputField from '../../components/Input';
+import styles from '../../constants/styles/stylesLogin';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -17,31 +17,32 @@ export default function LoginScreen({ navigation }) {
 
     try {
       // Conecta no backend e procura o usuario
-      const response = await fetch('http://localhost:3000/api/users/login', {
+      const response = await fetch('http://192.168.0.67:3000/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
-      });
+      })
 
-      const result = await response.json();
-      // Se conseguir conectar e achar o usuario no banco
       if (response.ok) {
-        navigation.navigate('HomeScreen')
+        // Se conseguir conectar e achar o usuario no banco
+        const result = await response.json()
+        navigation.navigate('Home')
+        console.log('Logado com Sucesso!')
       }
       else {
         // Se nao conseguir
-        Alert.alert('Email ou Senha inválidos');
+        Alert.alert('Email ou Senha inválidos')
       }
     }
-
     catch (error) {
-      console.log('Erro ao conectar ao servidor:', error);
-      Alert.alert('Erro ao conectar ao servidor'); // Caso não consiga conectar no backend
+      // Caso não consiga conectar no backend
+      console.log('Erro ao conectar ao servidor:', error)
+      Alert.alert('Erro ao conectar ao servidor') // Caso não consiga conectar no backend
     }
   }
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -65,10 +66,7 @@ export default function LoginScreen({ navigation }) {
           onChangeText={(text) => setPassword(text)}
         />
           
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleLogin}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
 
@@ -80,8 +78,12 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.signUpText}>Ainda não possui uma conta? <Text style={{ color: '#22402F' }}>Faça seu cadastro.</Text></Text>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={() => navigation.navigate('Admin')}>
+          <Text style={styles.forgotPasswordText}> Entrar como Administrador </Text>
+        </TouchableOpacity>
+
         <View style={styles.imageContainer}>
-          <Image source={require('../assests/logo.png')} style={styles.image} />
+          <Image source={require('../../assests/logo.png')} style={styles.image} />
         </View>
       </View>
     </SafeAreaView>

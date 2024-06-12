@@ -7,10 +7,9 @@ const routesMedicine = require('./src/routes/routesMedicine')
 
 const app = express()
 app.use(cors())
-app.use(bodyParser.json())
-app.use('/api/users', routesUser)
-app.use('/api/medicine', routesMedicine)
-app.use(express.json());
+app.use(express.json())
+app.use('/users', routesUser)
+app.use('/medicine', routesMedicine)
 
 const port = 3000;
 
