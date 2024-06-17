@@ -1,9 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
+import { heightTela, widthTela } from '../dimensions'
 
 export default styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 20,
+    width: widthTela,
+    height: heightTela
   },
   topContainer: {
     backgroundColor: 'white',
@@ -11,16 +17,16 @@ export default styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 10,
   },
-  userItem: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+  label: {
+    fontSize: 18,
+    marginBottom: 8,
+    color: '#038B4E'
   },
-  name: {
+  label1: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-  email: {
+  label2: {
     fontSize: 16,
     color: '#555',
   },
@@ -37,16 +43,24 @@ export default styles = StyleSheet.create({
     borderRadius: 12,
     padding: 10,
   },
-  button: {
-    backgroundColor: '#038B4E',
-    margin: 20,
-    borderRadius: 12,
-    alignItems: 'center',
+  input: {
+    height: 40,
+    borderColor: '#038B4E',
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingLeft: 8,
+    borderRadius: 5,
   },
-  buttonText: {
-    fontSize: 18,
-    color: '#fff',
-    padding: 10,
-    fontWeight: 'bold',
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    backgroundColor: '#038B4E',
+    borderRadius: 15,
+    padding: 12,
+  },
+  textButton: {
+    fontSize: 15,
+    color: '#fff'
   }
 })

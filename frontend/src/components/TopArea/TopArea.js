@@ -5,8 +5,8 @@ import axios from 'axios';
 import styles from '../../constants/styles/stylesHome';
 
 export default function TopArea() {
-  const [queryPesquisa, setQueryPesquisa] = useState('');
-  const [resultadosPesquisa, setResultadosPesquisa] = useState([]);
+  const [queryPesquisa, setQueryPesquisa] = useState('')
+  const [resultadosPesquisa, setResultadosPesquisa] = useState([])
 
   const handleSearch = async (query) => {
     setQueryPesquisa(query);
@@ -27,7 +27,7 @@ export default function TopArea() {
       <View style={styles.logoContainer}>
         <Image source={require('../../assests/logo.png')} style={styles.logo} />
         <View style={styles.userInfoContainer}>
-          <Text style={styles.userText}> Olá, Usuário</Text>
+        <Text style={styles.userText}> Olá, Usuário </Text>
         </View>
       </View>
 

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 import { heightTela, widthTela } from '../dimensions'
 
 export default styles = StyleSheet.create({

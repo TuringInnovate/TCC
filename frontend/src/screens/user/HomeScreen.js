@@ -1,47 +1,35 @@
-import { SafeAreaView, View, Text, TouchableOpacity, ScrollView } from 'react-native'
-import styles from '../../constants/styles/stylesHome'
-import Item from '../../components/Item'
-import TopArea from '../../components/TopArea/TopArea'
+import React, { useState, useEffect } from 'react'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import axios from 'axios'
 
+export default function HomeScreen({ navigation }) {
+  const [medicines, setMedicines] = useState([]) // armazena a lista de remédios
 
-export default function HomeScreen  ({ navigation }) {
-  const telasCategorias = (ItemId) => {
-    navigation.navigate('DynamicScreenCategory', { ItemId })
-  }
+  useEffect(() => {
+    axios.get('http://192.168.0.67:3000/medicine/list').then(response => {
+      setMedicines(response.data) // atualiza com os remédios obtidos
+    })
+    .catch(error => {
+      console.error('Erro ao buscar remédios:', error)
+    })
+  },[])
+
+  // navega para os detalhes do remédio ao ser pressionado
+  const viewMedicineDetails = (medicineId, medicineName, medicineDescription, medicinePrice) => {
+    navigation.navigate('MedicineDetails', { medicineId, medicineName, medicineDescription, medicinePrice });
+  };
+
   return (
-    <ScrollView> 
-      <SafeAreaView style={styles.container}>
-        <View style={styles.topContainer}>
-          <TopArea />
-          
-            <Text style={styles.categoryText}> Categoria </Text>
-            <View style={styles.quadradosStyle}>
-              <View style={styles.squareContainer}>
-                <Item text="Anti Alérgico" id="1" onPress={telasCategorias} />
-                <Item text="Antibióticos" id="2" onPress={telasCategorias} />
-              </View>
-
-              <View style={styles.squareContainer}>
-                <Item text="Anti Inflamatório" id="3" onPress={telasCategorias} />
-                <Item text="Dor Muscular" id="4" onPress={telasCategorias} />
-              </View>
-
-          </View>
-        </View>
-        <View style={styles.bottomContainer}>
-        </View>
-
-        <View style={styles.footer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Text style={styles.footerText}> Início </Text>
+    <View>
+      <FlatList
+        data={medicines} keyExtractor={(item) => item._id.toString()} renderItem={({ item }) => ( 
+          <TouchableOpacity style={{ padding: 20 }} onPress={() => viewMedicineDetails(item._id, item.name, item.description, item.price)}>
+            <Text>{item.name}</Text> 
+            <Text>{item.description}</Text> 
+            <Text>R${item.price}</Text> 
           </TouchableOpacity>
-          
-            <TouchableOpacity onPress={() => navigation.navigate('UserMenu')}>
-            <Text style={styles.footerText}> Menu </Text>
-          </TouchableOpacity>
-        </View>
-
-      </SafeAreaView>
-    </ScrollView>
+        )}
+      />
+    </View>
   )
-} 
+}

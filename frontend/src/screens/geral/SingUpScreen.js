@@ -1,43 +1,16 @@
-import { useState } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
+import { useState } from 'react'
+import { SafeAreaView, Text, View, TouchableOpacity, Image, Alert } from 'react-native'
 import InputField from '../../components/Input'
 import styles from '../../constants/styles/stylesLogin'
-import axios from 'axios'
+import handleRegister  from '../../functions/users/handleRegister'
 
 export default function SignUpScreen({ navigation }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleRegister = async () => {
-    if (!name || !email || !password) {
-      Alert.alert('Por favor, preencha todos os campos');
-      return;
-    }
-
-    try {
-      const response = await fetch('http://192.168.0.67:3000/users/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      })
-
-      const result = await response.json();
-      if (response.ok) {
-        Alert.alert('Usuário registrado com sucesso')
-        navigation.navigate('Login') // Navegue para a tela de login ou outra tela conforme necessário
-      }
-      else {
-        Alert.alert(result.msg || 'Erro ao registrar usuário')
-        console.log('Erro ao registrar usuário: ', result.msg)
-      }
-    }
-    catch(error){
-      console.log('Erro ao conectar ao servidor:', error)
-      Alert.alert('Erro ao conectar ao servidor')
-    }
+  const onRegister = () => {
+    handleRegister(name, email, password, navigation);
   }
 
   return (
@@ -70,8 +43,8 @@ export default function SignUpScreen({ navigation }) {
           onChangeText={(text) => setPassword(text)}
         />
           
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Acessar</Text>
+        <TouchableOpacity style={styles.button} onPress={onRegister}>
+          <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -87,7 +60,7 @@ export default function SignUpScreen({ navigation }) {
 
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 

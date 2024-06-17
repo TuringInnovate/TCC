@@ -4,12 +4,13 @@ const Medicine = require('../models/medicineModel')
 exports.createMedicine = async (req, res) => {
   try{
     // "Pegando" os dados dos campos pela requisição
-    const { image, name, description, bula, price } = req.body
+    const { image, name, category, description, bula, price } = req.body
 
     // Criando o novo remédio
     const newMedicine = new Medicine({
       image,
       name,
+      category,
       description,
       bula,
       price
@@ -70,11 +71,11 @@ exports.getMedicine = async (req, res) => {
 // ATUALIZAR REMÉDIO
 exports.updateMedicine = async (req, res) => {
   try{
-    const { image, name, description, bula, price } = req.body
+    const { image, name, category, description, bula, price } = req.body
 
     const medicine = await Medicine.findByIdAndUpdate(
       req.params.id,
-      {image, name, description, bula, price},
+      {image, name, category, description, bula, price},
       {new: true, rundValidators: true} // Retorna o remédio atualizado e validado
     )
     
@@ -122,3 +123,4 @@ exports.deleteMedicine = async (req, res) => {
 
   
 }
+

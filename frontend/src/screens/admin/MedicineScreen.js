@@ -1,39 +1,49 @@
-import { SafeAreaView, View, Text, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import axios from 'axios'
+import styles from '../../constants/styles/stylesList'
 import TopArea from '../../components/TopArea/TopArea'
-import styles from '../../constants/styles/stylesHome'
-import Item from '../../components/Item'
 
-export default function MedicineScreen  ({ navigation }) {
+
+export default function MedicineListScreen ({ navigation }) {
+  const [medicine, setMedicine] = useState([])
+
+  // useEffect para buscar a lista de remédio
+  useEffect(() => {
+    axios.get('http://192.168.0.67:3000/medicine/list').then(response => {
+      setMedicine(response.data) // atualiza com a lista de remédios
+    })
+    .catch(error => {
+      console.error('Erro ao buscar remédios:', error)
+    })
+  }, []) // array vazio garante que a requisição só seja feita uma vez
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topContainer}>
-        <TopArea />
-        
-          <Text style={styles.categoryText}> Remédios </Text>
-          <View style={styles.quadradosStyle}>
-            <View style={styles.squareContainer}>
-              <Item text="LISTA DE REMÉDIOS"  />
-              <Item text="ATUALIZAR REMÉDIO" />
-            </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.topContainer}>
 
-            <View style={styles.squareContainer}>
-              <Item text="EXCLUIR REMÉDIO"  />
-              <Item text="CADASTRAR REMÉDIO" />
-            </View>
+          <TopArea /> 
+
+          <Text style={styles.categoryText}> Lista de Remédios </Text>
+
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegisterMedicine')}>
+            <Text style={styles.textButton}> CADASTRAR REMÉDIO </Text>
+          </TouchableOpacity>
+      
+          <FlatList data={medicine} keyExtractor={(item) => item._id} renderItem={({ item }) => ( // Função para retornar cada item da lista
+              // vai para a tela de detalhes do usuário
+              <TouchableOpacity style={styles.list} onPress={() => navigation.navigate('MedicineDetail', { medicineId: item._id })} >
+                <Text style={styles.label1}>{item.name}</Text> 
+                <Text style={styles.label2}>{item.category}</Text> 
+                <Text style={styles.label2}>{item.description}</Text>
+              </TouchableOpacity>
+            )}
+            scrollEnabled={false}
+            />
 
         </View>
       </View>
-      <View style={styles.bottomContainer}>
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate('AdminHome')}>
-          <Text style={styles.footerText}> Início </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Admin')}>
-          <Text style={styles.footerText}> Menu </Text>
-        </TouchableOpacity>
-      </View>
-
-    </SafeAreaView>
-  );
-} 
+    </ScrollView>
+  )
+}

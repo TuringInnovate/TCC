@@ -1,11 +1,16 @@
+const { Double } = require('mongodb')
 const mongoose = require('mongoose')
 
 const medicineSchema = new mongoose.Schema({
     image: {
         type: String,
-        required: true
+        required: false
     },
     name: {
+        type: String,
+        required: true
+    },
+    category: {
         type: String,
         required: true
     },
@@ -15,12 +20,19 @@ const medicineSchema = new mongoose.Schema({
     },
     bula: {
         type: String,
-        required: true
-    },
-    price: {
-        type: String,
         required: false
     },
+    price: {
+        type: Number,
+        required: false,
+        validate: {
+            validator: function(v) {
+                // Valida se o valor é um número
+                return typeof v === 'number';
+            },
+            message: 'O preço deve ser um número'
+        }
+    }
 
 })
 
